@@ -1,0 +1,97 @@
+version:
+workflows:
+  version: 2
+  validate:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - sniff:
+          requires:
+            - build
+      - analyse:
+          requires:
+            - build
+      - coverage:
+          requires:
+            - test
+            - sniff
+            - analyse
+          filters:
+            branches:
+              only:
+                - master
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.1
+    steps:
+      - checkout
+      - restore_cache:
+          key: composer-cache-{{ checksum "composer.json" }}
+      - run:
+          name: Install dependancies
+          command: composer update
+      - save_cache:
+          key: composer-cache-{{ checksum "composer.json" }}
+          paths:
+            - vendor
+  test:
+    docker:
+      - image: circleci/php:7.1
+    steps:
+      - checkout
+      - restore_cache:
+          key: composer-cache-{{ checksum "composer.json" }}
+      - run:
+          name: Run the tests
+          command: vendor/bin/phpunit
+      - save_cache:
+          key: code-coverage-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - build/coverage
+      - store_artifacts:
+          path: build/coverage
+          prefix: coverage
+  sniff:
+    docker:
+      - image: circleci/php:7.1
+    steps:
+      - checkout
+      - restore_cache:
+          key: composer-cache-{{ checksum "composer.json" }}
+      - run:
+          name: Run the sniffer
+          command: vendor/bin/php-cs-fixer fix --dry-run
+  analyse:
+    docker:
+      - image: circleci/php:7.1
+    steps:
+      - checkout
+      - restore_cache:
+          key: composer-cache-{{ checksum "composer.json" }}
+      - run:
+          name: Install PHP AST
+          command: sudo pecl install ast
+      - run:
+          name: Configure PHP AST
+          command: echo "extension=ast.so" | sudo tee -a /usr/local/etc/php/conf.d/circleci-ast.ini
+      - run:
+          name: Disable XDEBUG
+          command: sudo sed -i 's/^zend_extension/;zend_extension/g' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - run:
+          name: Run the analyser
+          command: vendor/bin/phan
+  coverage:
+    docker:
+      - image: circleci/php:7.1
+    steps:
+      - checkout
+      - restore_cache:
+          key: composer-cache-{{ checksum "composer.json" }}
+      - restore_cache:
+          key: code-coverage-{{ .Branch }}-{{ .Revision }}
+      - run:
+          name: Push the code coverage up
+          command: vendor/bin/codacycoverage clover build/coverage/clover.xml

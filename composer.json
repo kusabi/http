@@ -1,0 +1,37 @@
+{
+    "name": "kusabi/http",
+    "description": "A PSR-7 and PSR-17 conforming HTTP library",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christian Harvey",
+            "email": "kusabi.software@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.0",
+        "kusabi/uri": "^1.0",
+        "kusabi/stream": "^1.0"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^3.4",
+        "phan/phan": "^1.2",
+        "phpunit/phpunit": "^6.5",
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "codacy/coverage": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kusabi\\Http\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}
