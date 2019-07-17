@@ -243,13 +243,14 @@ abstract class AbstractMessage implements MessageInterface
         if (!$this->isValidHeaderKey($name)) {
             throw new InvalidHeaderKeyException($name);
         }
-        $this->setHeader($name, $value);
         if ($this->hasHeader($name)) {
             $this->setHeader($this->headerKeys[$this->normaliseHeaderKey($name)], array_merge(
                 (array) $this->getHeader($name),
                 (array) $value
             ));
+            return;
         }
+        $this->setHeader($name, $value);
     }
 
     /**
