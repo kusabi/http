@@ -1,0 +1,42 @@
+{
+    "name": "kusabi/http",
+    "description": "Just another request library",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable" : true,
+    "require": {
+        "php": ">=7.2",
+        "psr/http-factory": "^1.0",
+        "psr/http-client": "^1.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "*",
+        "nesbot/carbon": "*",
+        "phpunit/phpunit": "*",
+        "symfony/var-dumper": "*"
+    },
+    "suggest": {
+        "ext-curl": "Required for CURL handler support",
+        "ext-intl": "Required for Internationalized Domain Name (IDN) support",
+        "psr/log": "Required for using the Log middleware"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kusabi\\Http\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kusabi\\Http\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "provide": {
+        "psr/http-client-implementation": "1.0"
+    }
+}

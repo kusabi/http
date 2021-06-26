@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    bootstrap="vendor/autoload.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="false"
+    convertWarningsToExceptions="false"
+    forceCoversAnnotation="true"
+>
+    <testsuites>
+        <testsuite name="exceptions">
+            <file>./tests/Exceptions/InvalidHeaderKeyExceptionTest.php</file>
+            <file>./tests/Exceptions/InvalidHttpMethodExceptionTest.php</file>
+            <file>./tests/Exceptions/InvalidHttpStatusCodeExceptionTest.php</file>
+            <file>./tests/Exceptions/InvalidPortExceptionTest.php</file>
+            <file>./tests/Exceptions/InvalidUploadedFileStatusExceptionTest.php</file>
+            <file>./tests/Exceptions/InvalidUriExceptionTest.php</file>
+            <file>./tests/Exceptions/UploadedFileAlreadyMovedExceptionTest.php</file>
+        </testsuite>
+        <testsuite name="message">
+            <file>./tests/Message/Creating.php</file>
+            <file>./tests/Message/Modifying.php</file>
+            <file>./tests/Message/Reading.php</file>
+        </testsuite>
+        <testsuite name="request">
+            <file>./tests/Request/Creating.php</file>
+            <file>./tests/Request/Modifying.php</file>
+            <file>./tests/Request/Reading.php</file>
+        </testsuite>
+        <testsuite name="response">
+            <file>./tests/Response/Creating.php</file>
+            <file>./tests/Response/Modifying.php</file>
+            <file>./tests/Response/Reading.php</file>
+        </testsuite>
+        <testsuite name="stream">
+            <file>./tests/Stream/Converting.php</file>
+            <file>./tests/Stream/Creating.php</file>
+            <file>./tests/Stream/Modifying.php</file>
+            <file>./tests/Stream/Reading.php</file>
+        </testsuite>
+        <testsuite name="stream-factory">
+            <file>./tests/StreamFactory/Creating.php</file>
+        </testsuite>
+        <testsuite name="uploaded-file">
+            <file>./tests/UploadedFile/Creating.php</file>
+            <file>./tests/UploadedFile/Modifying.php</file>
+            <file>./tests/UploadedFile/Reading.php</file>
+        </testsuite>
+        <testsuite name="uri">
+            <file>./tests/Uri/Converting.php</file>
+            <file>./tests/Uri/Creating.php</file>
+            <file>./tests/Uri/Modifying.php</file>
+            <file>./tests/Uri/Reading.php</file>
+        </testsuite>
+        <testsuite name="uri-factory">
+            <file>./tests/UriFactory/Creating.php</file>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="coverage" lowUpperBound="50" highLowerBound="90"/>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+    </logging>
+</phpunit>

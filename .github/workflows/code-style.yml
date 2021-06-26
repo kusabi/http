@@ -1,0 +1,25 @@
+name: code-style
+on: [push]
+jobs:
+  code-style:
+    name: Code style
+    runs-on: ubuntu-latest
+    steps:
+
+      # Setup the correct PHP version
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.2'
+
+      # Check out the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Composer install
+      - name: Run composer update
+        run: composer update
+
+      # Run unit tests with code coverage
+      - name: Run code sniffer
+        run: vendor/bin/php-cs-fixer fix --dry-run

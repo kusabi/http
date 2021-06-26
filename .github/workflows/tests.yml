@@ -1,0 +1,53 @@
+name: tests
+on: [push]
+jobs:
+  test:
+    name: PHP ${{ matrix.php-version }} unit tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['7.2', '7.3', '7.4', '8.0']
+    steps:
+
+      # Setup the correct PHP version
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: xdebug
+
+      # Check out the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Composer install
+      - name: Run composer update
+        run: composer update
+
+      # Run unit tests with code coverage
+      - name: Run phpunit
+        run: vendor/bin/phpunit --coverage-clover=coverage/coverage.xml
+
+      # Upload the code coverage artifact
+      - name: Upload code coverage artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: coverage
+          path: coverage/coverage.xml
+  coverage:
+    name: Publish code coverage
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      # Check out the code
+      - uses: actions/checkout@v2
+
+      # Download the coverage artifact
+      - name: Download code coverage artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: coverage
+
+      # Upload coverage artifact
+      - name: Upload code coverage
+        run: bash <(curl -s https://codecov.io/bash) -Z -t ${{ secrets.CODECOV_TOKEN }} -f coverage/coverage.xml
